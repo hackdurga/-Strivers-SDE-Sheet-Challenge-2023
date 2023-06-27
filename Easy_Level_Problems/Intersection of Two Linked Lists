@@ -1,0 +1,42 @@
+/****************************************************************
+
+    Following is the class structure of the Node class:
+
+        class Node
+        {
+        public:
+            int data;
+            Node *next;
+            Node()
+            {
+                this->data = 0;
+                next = NULL;
+            }
+            Node(int data)
+            {
+                this->data = data;
+                this->next = NULL;
+            }
+            Node(int data, Node* next)
+            {
+                this->data = data;
+                this->next = next;
+            }
+        };
+
+*****************************************************************/
+
+Node* findIntersection(Node *firstHead, Node *secondHead) {
+    Node *ptr1 = firstHead;
+    Node *ptr2 = secondHead;
+
+    // Traverse both lists until they intersect or reach the end
+    while (ptr1 != ptr2) {
+        ptr1 = (ptr1 == NULL) ? secondHead : ptr1->next;
+        ptr2 = (ptr2 == NULL) ? firstHead : ptr2->next;
+    }
+
+    // If ptr1 or ptr2 is NULL, it means the lists do not intersect
+    // Otherwise, ptr1 and ptr2 point to the intersection node
+    return ptr1;
+}
