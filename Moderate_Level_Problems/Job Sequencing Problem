@@ -1,0 +1,30 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+bool compareJobs(const vector<int>& job1, const vector<int>& job2) {
+    return job1[1] > job2[1]; // Compare based on profit in descending order
+}
+
+int jobScheduling(vector<vector<int>>& jobs) {
+    sort(jobs.begin(), jobs.end(), compareJobs); // Sort the jobs based on profit
+
+    int n = jobs.size();
+    vector<bool> slot(n, false);
+    int maxProfit = 0;
+
+    for (int i = 0; i < n; i++) {
+        // Find the maximum available time slot before the job's deadline
+        for (int j = min(n, jobs[i][0]) - 1; j >= 0; j--) {
+            if (!slot[j]) {
+                slot[j] = true;
+                maxProfit += jobs[i][1];
+                break;
+            }
+        }
+    }
+
+    return maxProfit;
+}
