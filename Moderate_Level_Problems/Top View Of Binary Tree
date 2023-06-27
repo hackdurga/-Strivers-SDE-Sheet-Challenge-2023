@@ -1,0 +1,60 @@
+#include <bits/stdc++.h> 
+/************************************************************
+
+    Following is the TreeNode class structure:
+
+    template <typename T>
+    class TreeNode {
+       public:
+        T val;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T val) {
+            this->val = val;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+
+vector<int> getTopView(TreeNode<int> *root) {
+    vector<int> topView;
+
+    if (root == NULL) {
+        return topView;
+    }
+
+    map<int, int> verticalMap; // Map to store the vertical level and node value
+
+    // Queue to perform level order traversal
+    queue<pair<TreeNode<int>*, int>> q;
+    q.push({root, 0}); // Push the root node with vertical level 0
+
+    while (!q.empty()) {
+        TreeNode<int> *node = q.front().first;
+        int verticalLevel = q.front().second;
+        q.pop();
+
+        // If the current vertical level is not in the map, add the node value
+        if (verticalMap.find(verticalLevel) == verticalMap.end()) {
+            verticalMap[verticalLevel] = node->val;
+        }
+
+        // Push the left and right child nodes with updated vertical levels
+        if (node->left != NULL) {
+            q.push({node->left, verticalLevel - 1});
+        }
+        if (node->right != NULL) {
+            q.push({node->right, verticalLevel + 1});
+        }
+    }
+
+    // Populate the top view vector from the vertical map
+    for (const auto& pair : verticalMap) {
+        topView.push_back(pair.second);
+    }
+
+    return topView;
+}
