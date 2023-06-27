@@ -1,0 +1,25 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int getMedian(vector<vector<int>>& matrix) {
+    int rows = matrix.size();
+    int cols = matrix[0].size();
+
+    // Flatten the matrix into a 1D array
+    vector<int> flattened;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            flattened.push_back(matrix[i][j]);
+        }
+    }
+
+    // Sort the flattened array
+    sort(flattened.begin(), flattened.end());
+
+    // Find the median element
+    int medianIndex = flattened.size() / 2;
+    return flattened[medianIndex];
+}
