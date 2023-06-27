@@ -1,0 +1,22 @@
+#include <bits/stdc++.h> 
+int uniqueSubstrings(string input)
+{
+    //Write your code here
+    int n = input.length();
+    unordered_set<char> uniqueChars;
+    int start = 0, end = 0, maxLen = 0;
+
+    while (end < n) {
+        if (uniqueChars.find(input[end]) == uniqueChars.end()) {
+            uniqueChars.insert(input[end]);
+            maxLen = max(maxLen, end - start + 1);
+            end++;
+        } else {
+            uniqueChars.erase(input[start]);
+            start++;
+        }
+    }
+
+    return maxLen;
+
+}
