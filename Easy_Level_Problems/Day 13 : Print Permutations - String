@@ -1,0 +1,24 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+void generatePermutations(string& s, int index, vector<string>& permutations) {
+    if (index == s.length() - 1) {
+        permutations.push_back(s);
+        return;
+    }
+
+    for (int i = index; i < s.length(); i++) {
+        swap(s[index], s[i]);
+        generatePermutations(s, index + 1, permutations);
+        swap(s[index], s[i]);
+    }
+}
+
+vector<string> findPermutations(string& s) {
+    vector<string> permutations;
+    generatePermutations(s, 0, permutations);
+    return permutations;
+}
