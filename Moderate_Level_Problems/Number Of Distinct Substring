@@ -1,0 +1,17 @@
+#include <bits/stdc++.h> 
+using namespace std;
+
+int distinctSubstring(string& word) {
+    set<string> substrings;
+    int n = word.length();
+
+    // Generate all substrings
+    for (int i = 0; i < n; i++) {
+        for (int len = 1; len <= n - i; len++) {
+            substrings.insert(word.substr(i, len));
+        }
+    }
+
+    // Return the count of unique substrings
+    return substrings.size();
+}
