@@ -1,0 +1,68 @@
+#include <bits/stdc++.h> 
+/************************************************************
+
+    Following is the TreeNode class structure.
+
+    template <typename T>
+    class TreeNode {
+        public:
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data) {
+            this->data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// template <typename T>
+// class TreeNode {
+// public:
+//     T data;
+//     TreeNode<T> *left;
+//     TreeNode<T> *right;
+
+//     TreeNode(T data) {
+//         this->data = data;
+//         left = NULL;
+//         right = NULL;
+//     }
+// };
+
+TreeNode<int> *flattenBinaryTree(TreeNode<int> *root) {
+    if (root == NULL || (root->left == NULL && root->right == NULL))
+        return root;
+
+    if (root->left != NULL) {
+        TreeNode<int> *rightSubtree = root->right;
+        root->right = root->left;
+        root->left = NULL;
+
+        TreeNode<int> *rightmost = root->right;
+        while (rightmost->right != NULL)
+            rightmost = rightmost->right;
+
+        rightmost->right = rightSubtree;
+    }
+
+    flattenBinaryTree(root->right);
+
+    return root;
+}
+
+void inorderTraversal(TreeNode<int> *root) {
+    if (root == NULL)
+        return;
+
+    inorderTraversal(root->left);
+    cout << root->data << " ";
+    inorderTraversal(root->right);
+}
