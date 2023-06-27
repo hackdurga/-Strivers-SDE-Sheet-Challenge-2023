@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// template <typename T>
+// class BinaryTreeNode {
+// public:
+//     T data;
+//     BinaryTreeNode<T> *left;
+//     BinaryTreeNode<T> *right;
+
+//     BinaryTreeNode(T data) {
+//         this->data = data;
+//         left = NULL;
+//         right = NULL;
+//     }
+// };
+
+BinaryTreeNode<int>* BTtoDLL(BinaryTreeNode<int>* root) {
+    if (root == NULL) {
+        return NULL;
+    }
+
+    stack<BinaryTreeNode<int>*> nodeStack;
+    BinaryTreeNode<int>* curr = root;
+    BinaryTreeNode<int>* prev = NULL;
+    BinaryTreeNode<int>* head = NULL;
+
+    while (curr != NULL || !nodeStack.empty()) {
+        while (curr != NULL) {
+            nodeStack.push(curr);
+            curr = curr->left;
+        }
+
+        curr = nodeStack.top();
+        nodeStack.pop();
+
+        if (prev == NULL) {
+            head = curr; // Set the head of the DLL
+        } else {
+            prev->right = curr;
+            curr->left = prev;
+        }
+
+        prev = curr;
+        curr = curr->right;
+    }
+
+    return head;
+}
