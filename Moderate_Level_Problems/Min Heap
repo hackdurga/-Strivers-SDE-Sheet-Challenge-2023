@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> minHeap(int n, vector<vector<int>>& q) {
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+    vector<int> results;
+
+    for (auto query : q) {
+        if (query[0] == 0) {
+            // Insert X in the heap
+            minHeap.push(query[1]);
+        } else if (query[0] == 1) {
+            // Print the minimum element and remove it
+            int minimum = minHeap.top();
+            minHeap.pop();
+            results.push_back(minimum);
+        }
+    }
+
+    return results;
+}
