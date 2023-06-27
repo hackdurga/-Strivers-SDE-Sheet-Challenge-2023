@@ -1,0 +1,74 @@
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    template <typename T>
+    class TreeNode {
+       public:
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data) {
+            this->data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+#include <sstream>
+
+string serializeTree(TreeNode<int> *root) {
+    if (root == NULL) {
+        return "#"; // Represent NULL node with "#"
+    }
+
+    string serialized = to_string(root->data); // Convert the node value to string
+
+    // Recursively serialize the left and right subtrees
+    string leftSerialized = serializeTree(root->left);
+    string rightSerialized = serializeTree(root->right);
+
+    // Combine the serialized strings with delimiters
+    serialized += "," + leftSerialized + "," + rightSerialized;
+
+    return serialized;
+}
+
+TreeNode<int> *deserializeTreeHelper(const vector<string> &nodes, int &index) {
+    if (index >= nodes.size()) {
+        return NULL; // Reached the end of the nodes
+    }
+
+    string nodeValue = nodes[index++];
+    if (nodeValue == "#") {
+        return NULL; // NULL node
+    }
+
+    int value = stoi(nodeValue); // Convert string to integer
+
+    // Create a new node with the current value
+    TreeNode<int> *node = new TreeNode<int>(value);
+
+    // Recursively construct the left and right subtrees
+    node->left = deserializeTreeHelper(nodes, index);
+    node->right = deserializeTreeHelper(nodes, index);
+
+    return node;
+}
+
+TreeNode<int> *deserializeTree(string &serialized) {
+    // Split the serialized string into individual node values
+    stringstream ss(serialized);
+    string nodeValue;
+    vector<string> nodes;
+    while (getline(ss, nodeValue, ',')) {
+        nodes.push_back(nodeValue);
+    }
+
+    int index = 0;
+    return deserializeTreeHelper(nodes, index);
+}
+
+
