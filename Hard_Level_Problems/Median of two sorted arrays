@@ -1,0 +1,45 @@
+double median(vector<int>& a, vector<int>& b) {
+    int n = a.size();
+    int m = b.size();
+
+    // Ensure 'a' is the smaller array
+    if (n > m) {
+        return median(b, a);
+    }
+
+    int low = 0;
+    int high = n;
+    int partition_a, partition_b;
+    int maxLeftA, maxLeftB, minRightA, minRightB;
+
+    while (low <= high) {
+        partition_a = (low + high) / 2;
+        partition_b = (n + m + 1) / 2 - partition_a;
+
+        // Calculate the elements for comparison
+        maxLeftA = (partition_a == 0) ? INT32_MIN : a[partition_a - 1];
+        minRightA = (partition_a == n) ? INT32_MAX : a[partition_a];
+        maxLeftB = (partition_b == 0) ? INT32_MIN : b[partition_b - 1];
+        minRightB = (partition_b == m) ? INT32_MAX : b[partition_b];
+
+        if (maxLeftA <= minRightB && maxLeftB <= minRightA) {
+            // Correct partitioning found
+            if ((n + m) % 2 == 0) {
+                // Even length
+                return (max(maxLeftA, maxLeftB) + min(minRightA, minRightB)) / 2.0;
+            } else {
+                // Odd length
+                return max(maxLeftA, maxLeftB);
+            }
+        } else if (maxLeftA > minRightB) {
+            // Adjust 'high' to move towards the left
+            high = partition_a - 1;
+        } else {
+            // Adjust 'low' to move towards the right
+            low = partition_a + 1;
+        }
+    }
+
+    // No median found
+    return 0.0;
+}
