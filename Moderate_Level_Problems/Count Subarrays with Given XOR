@@ -1,0 +1,20 @@
+#include <bits/stdc++.h>
+
+int subarraysXor(vector<int>& arr, int x) {
+    unordered_map<int, int> xorCount;
+    int prefixXor = 0;
+    int count = 0;
+
+    for (int num : arr) {
+        prefixXor ^= num;
+        if (prefixXor == x) {
+            count++;
+        }
+        if (xorCount.count(prefixXor ^ x)) {
+            count += xorCount[prefixXor ^ x];
+        }
+        xorCount[prefixXor]++;
+    }
+
+    return count;
+}
