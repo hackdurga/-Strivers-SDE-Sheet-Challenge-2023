@@ -1,0 +1,41 @@
+#include <bits/stdc++.h> 
+
+class Stack {
+private:
+    std::vector<int> stack; // Vector to store the stack elements.
+
+public:
+    Stack() {
+        // Constructor
+    }
+
+    int getSize() {
+        return stack.size();
+    }
+
+    bool isEmpty() {
+        return stack.empty();
+    }
+
+    void push(int element) {
+        stack.push_back(element);
+    }
+
+    int pop() {
+        if (isEmpty()) {
+            return -1; // Stack is empty
+        }
+
+        int topElement = stack.back();
+        stack.pop_back();
+        return topElement;
+    }
+
+    int top() {
+        if (isEmpty()) {
+            return -1; // Stack is empty
+        }
+
+        return stack.back();
+    }
+};
