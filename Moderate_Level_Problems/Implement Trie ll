@@ -1,0 +1,75 @@
+#include <bits/stdc++.h> 
+using namespace std;
+
+class TrieNode {
+public:
+    unordered_map<char, TrieNode*> children;
+    int wordCount;
+
+    TrieNode() : wordCount(0) {}
+};
+
+class Trie {
+private:
+    TrieNode* root;
+
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+
+    void insert(string& word) {
+        TrieNode* curr = root;
+        for (char ch : word) {
+            if (curr->children.find(ch) == curr->children.end()) {
+                curr->children[ch] = new TrieNode();
+            }
+            curr = curr->children[ch];
+        }
+        curr->wordCount++;
+    }
+
+    int countWordsEqualTo(string& word) {
+        TrieNode* curr = root;
+        for (char ch : word) {
+            if (curr->children.find(ch) == curr->children.end()) {
+                return 0;
+            }
+            curr = curr->children[ch];
+        }
+        return curr->wordCount;
+    }
+
+    int countWordsStartingWith(string& prefix) {
+        TrieNode* curr = root;
+        for (char ch : prefix) {
+            if (curr->children.find(ch) == curr->children.end()) {
+                return 0;
+            }
+            curr = curr->children[ch];
+        }
+        int count = 0;
+        countWordsStartingWithHelper(curr, count);
+        return count;
+    }
+
+    void countWordsStartingWithHelper(TrieNode* node, int& count) {
+        if (node->wordCount > 0) {
+            count += node->wordCount;
+        }
+        for (auto& it : node->children) {
+            countWordsStartingWithHelper(it.second, count);
+        }
+    }
+
+    void erase(string& word) {
+        TrieNode* curr = root;
+        for (char ch : word) {
+            if (curr->children.find(ch) == curr->children.end()) {
+                return;
+            }
+            curr = curr->children[ch];
+        }
+        curr->wordCount--;
+    }
+};
