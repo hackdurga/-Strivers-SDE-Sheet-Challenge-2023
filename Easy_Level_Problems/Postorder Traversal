@@ -1,0 +1,38 @@
+#include <bits/stdc++.h> 
+/*
+    Following is Binary Tree Node structure:
+    class TreeNode
+    {
+    public:
+        int data;
+        TreeNode *left, *right;
+        TreeNode() : data(0), left(NULL), right(NULL) {}
+        TreeNode(int x) : data(x), left(NULL), right(NULL) {}
+        TreeNode(int x, TreeNode *left, TreeNode *right) : data(x), left(left), right(right) {}
+    };
+*/
+void postorder(TreeNode* node, vector<int> &ans)
+{
+    if (node == NULL)
+    {
+        return;
+    }
+
+    // Traversing left subtree
+    postorder(node->left, ans);
+
+    // Traversing right subtree
+    postorder(node->right, ans);
+ 
+    // Inserting node's value to ans array.    
+    ans.push_back(node->data);
+}   
+
+vector<int> getPostOrderTraversal(TreeNode* root)
+{   
+    // Maintain an array
+    vector<int> ans;
+    
+    postorder(root, ans);
+    return ans;
+}
