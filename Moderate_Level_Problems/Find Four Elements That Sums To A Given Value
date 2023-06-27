@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+string fourSum(vector<int>& arr, int target, int n) {
+    unordered_map<int, pair<int, int>> pairSums;
+
+    // Generate all possible pair sums and store the pair indices in the hash table
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            int pairSum = arr[i] + arr[j];
+            pairSums[pairSum] = make_pair(i, j);
+        }
+    }
+
+    // Check for four numbers whose sum is equal to the target
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            int remainingSum = target - (arr[i] + arr[j]);
+            if (pairSums.find(remainingSum) != pairSums.end()) {
+                pair<int, int> pairIndices = pairSums[remainingSum];
+                if (pairIndices.first != i && pairIndices.first != j && pairIndices.second != i && pairIndices.second != j) {
+                    return "Yes";
+                }
+            }
+        }
+    }
+
+    return "No";
+}
