@@ -1,0 +1,20 @@
+#include <bits/stdc++.h> 
+using namespace std;
+
+void generateSubsetSums(vector<int>& nums, int index, int curr_sum, vector<int>& subset_sums) {
+    if (index == nums.size()) {
+        subset_sums.push_back(curr_sum);
+        return;
+    }
+
+    generateSubsetSums(nums, index + 1, curr_sum + nums[index], subset_sums);
+    generateSubsetSums(nums, index + 1, curr_sum, subset_sums);
+}
+
+vector<int> subsetSum(vector<int>& nums) {
+    vector<int> subset_sums;
+    sort(nums.begin(), nums.end());
+    generateSubsetSums(nums, 0, 0, subset_sums);
+    sort(subset_sums.begin(), subset_sums.end());
+    return subset_sums;
+}
