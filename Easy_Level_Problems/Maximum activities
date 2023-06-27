@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int maximumActivities(vector<int>& start, vector<int>& finish) {
+    int n = start.size();
+    if (n == 0) {
+        return 0;
+    }
+
+    // Sort the activities based on their finish times
+    vector<pair<int, int>> activities;
+    for (int i = 0; i < n; i++) {
+        activities.push_back({finish[i], start[i]});
+    }
+    sort(activities.begin(), activities.end());
+
+    int count = 1; // First activity is always selected
+    int prevFinishTime = activities[0].first;
+
+    // Check each activity and select if it doesn't overlap with the previous one
+    for (int i = 1; i < n; i++) {
+        int currStartTime = activities[i].second;
+        if (currStartTime >= prevFinishTime) {
+            count++;
+            prevFinishTime = activities[i].first;
+        }
+    }
+
+    return count;
+}
