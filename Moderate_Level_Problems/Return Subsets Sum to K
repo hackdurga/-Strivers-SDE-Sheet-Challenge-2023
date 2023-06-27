@@ -1,0 +1,28 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void backtrack(vector<int>& arr, int startIndex, int currentSum, int targetSum, vector<int>& currentSubset, vector<vector<int>>& result) {
+    if (startIndex >= arr.size()) {
+        if (currentSum == targetSum) {
+            result.push_back(currentSubset);
+        }
+        return;
+    }
+
+    // Include the current element
+    currentSubset.push_back(arr[startIndex]);
+    backtrack(arr, startIndex + 1, currentSum + arr[startIndex], targetSum, currentSubset, result);
+    currentSubset.pop_back();
+
+    // Exclude the current element
+    backtrack(arr, startIndex + 1, currentSum, targetSum, currentSubset, result);
+}
+
+vector<vector<int>> findSubsetsThatSumToK(vector<int> arr, int n, int k) {
+    vector<vector<int>> result;
+    vector<int> currentSubset;
+    backtrack(arr, 0, 0, k, currentSubset, result);
+    return result;
+}
