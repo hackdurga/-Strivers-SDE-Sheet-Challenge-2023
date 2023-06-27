@@ -1,0 +1,24 @@
+#include <bits/stdc++.h>
+
+int modularExponentiation(int x, int n, int m) {
+    if (m == 1) {
+        return 0;
+    }
+
+    long long result = 1;
+    long long base = x;
+    long long exp = n;
+
+    base %= m;
+
+    while (exp > 0) {
+        if (exp & 1) {
+            result = (result * base) % m;
+        }
+
+        base = (base * base) % m;
+        exp >>= 1;
+    }
+
+    return static_cast<int>(result);
+}
