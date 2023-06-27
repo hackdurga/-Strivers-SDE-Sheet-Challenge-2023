@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+
+/****************************************************************
+
+    Following is the class structure of the LinkedListNode class:
+
+    template <typename T>
+    class LinkedListNode
+    {
+    public:
+        T data;
+        LinkedListNode<T> *next;
+        LinkedListNode(T data)
+        {
+            this->data = data;
+            this->next = NULL;
+        }
+    };
+
+*****************************************************************/
+
+template <typename T>
+bool isPalindrome(LinkedListNode<T> *head) {
+    if (head == NULL || head->next == NULL) {
+        return true;  // An empty list or a list with one node is a palindrome
+    }
+
+    // Find the middle of the linked list using the two-pointer approach
+    LinkedListNode<T> *slow = head;
+    LinkedListNode<T> *fast = head;
+
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    // Reverse the second half of the linked list
+    LinkedListNode<T> *prev = NULL;
+    LinkedListNode<T> *curr = slow;
+    LinkedListNode<T> *nextNode;
+
+    while (curr != NULL) {
+        nextNode = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = nextNode;
+    }
+
+    // Compare the first half and the reversed second half of the linked list
+    LinkedListNode<T> *firstHalf = head;
+    LinkedListNode<T> *secondHalf = prev;
+
+    while (secondHalf != NULL) {
+        if (firstHalf->data != secondHalf->data) {
+            return false;  // The linked list is not a palindrome
+        }
+        firstHalf = firstHalf->next;
+        secondHalf = secondHalf->next;
+    }
+
+    return true;  // The linked list is a palindrome
+}
