@@ -1,0 +1,29 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <sstream>
+#include <vector>
+
+using namespace std;
+
+string reverseString(string& str)
+{
+    // Split the string into words
+    stringstream ss(str);
+    vector<string> words;
+    string word;
+    while (ss >> word) {
+        words.push_back(word);
+    }
+
+    // Reverse the order of words
+    reverse(words.begin(), words.end());
+
+    // Combine the reversed words into a string
+    stringstream reversed;
+    for (const string& w : words) {
+        reversed << w << ' ';
+    }
+
+    return reversed.str();
+}
