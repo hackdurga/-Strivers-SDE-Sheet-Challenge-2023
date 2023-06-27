@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+
+int maximumXor(std::vector<int> A)
+{
+    int maxXor = 0;
+    int mask = 0;
+    
+    // Iterate over each bit from the most significant bit to the least significant bit
+    for (int i = sizeof(int) * 8 - 1; i >= 0; i--)
+    {
+        // Set the next bit in the mask
+        mask |= (1 << i);
+        
+        std::unordered_set<int> prefixes;
+        // Add the prefixes of the current numbers to the set
+        for (int num : A)
+        {
+            prefixes.insert(num & mask);
+        }
+        
+        // Assume the next bit is set in the answer
+        int potentialMaxXor = maxXor | (1 << i);
+        
+        // Try to find a pair of prefixes that gives the potential maximum XOR
+        for (int prefix : prefixes)
+        {
+            if (prefixes.count(potentialMaxXor ^ prefix))
+            {
+                maxXor = potentialMaxXor;
+                break;
+            }
+        }
+    }
+    
+    return maxXor;
+}
