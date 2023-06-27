@@ -1,0 +1,76 @@
+/****************************************************************
+
+    Following is the class structure of the Node class:
+
+        class Node
+        {
+        public:
+            int data;
+            Node *next;
+            Node()
+            {
+                this->data = 0;
+                next = NULL;
+            }
+            Node(int data)
+            {
+                this->data = data;
+                this->next = NULL;
+            }
+            Node(int data, Node* next)
+            {
+                this->data = data;
+                this->next = next;
+            }
+        };
+
+
+*****************************************************************/
+
+Node* findCycleStart(Node* head, int pos) {
+    if (head == NULL || head->next == NULL) {
+        return NULL;  // No cycle exists
+    }
+
+    Node* slow = head;
+    Node* fast = head;
+
+    // Move the fast pointer 'pos' positions ahead
+    for (int i = 0; i < pos; i++) {
+        if (fast == NULL) {
+            return NULL;  // No cycle exists
+        }
+        fast = fast->next;
+    }
+
+    // Move both pointers until they meet
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast) {
+            break;  // Cycle exists
+        }
+    }
+
+    if (fast == NULL || fast->next == NULL) {
+        return NULL;  // No cycle exists
+    }
+
+    // Move the slow pointer to the head
+    // Keep the fast pointer at the meeting point
+    slow = head;
+
+    // Move both pointers at the same speed until they meet again
+    while (slow != fast) {
+        slow = slow->next;
+        fast = fast->next;
+    }
+
+    return slow;  // Return the node where the cycle begins
+}
+
+Node *firstNode(Node *head)
+{
+    Node* cycleStart = findCycleStart(head, -1);
+    return cycleStart;
+}
