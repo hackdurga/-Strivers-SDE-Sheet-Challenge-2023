@@ -1,0 +1,75 @@
+#include <bits/stdc++.h>
+
+struct Node {
+    int key;
+    int value;
+    int frequency;
+    Node* prev;
+    Node* next;
+
+    Node(int key, int value) : key(key), value(value), frequency(1), prev(nullptr), next(nullptr) {}
+};
+
+class LFUCache {
+private:
+    int capacity;
+    int size;
+    int minFrequency;
+    std::unordered_map<int, Node*> cache;
+    std::unordered_map<int, std::list<Node*>> frequencyMap;
+
+public:
+    LFUCache(int capacity) : capacity(capacity), size(0), minFrequency(0) {}
+
+    int get(int key) {
+        if (cache.find(key) == cache.end()) {
+            return -1; // Key not found
+        }
+
+        Node* node = cache[key];
+        updateNode(node);
+        return node->value;
+    }
+
+    void put(int key, int value) {
+        if (capacity == 0) {
+            return;
+        }
+
+        if (cache.find(key) != cache.end()) {
+            // Key already exists, update the value and update frequency
+            Node* node = cache[key];
+            node->value = value;
+            updateNode(node);
+        } else {
+            // Key doesn't exist, create a new node
+            if (size == capacity) {
+                // Cache is full, evict the least frequently used node
+                Node* node = frequencyMap[minFrequency].front();
+                cache.erase(node->key);
+                frequencyMap[minFrequency].pop_front();
+                delete node;
+                size--;
+            }
+
+            Node* newNode = new Node(key, value);
+            cache[key] = newNode;
+            frequencyMap[1].push_back(newNode);
+            minFrequency = 1;
+            size++;
+        }
+    }
+
+private:
+    void updateNode(Node* node) {
+        int frequency = node->frequency;
+        frequencyMap[frequency].erase(find(frequencyMap[frequency].begin(), frequencyMap[frequency].end(), node));
+
+        if (frequency == minFrequency && frequencyMap[frequency].empty()) {
+            minFrequency++;
+        }
+
+        node->frequency++;
+        frequencyMap[node->frequency].push_back(node);
+    }
+};
