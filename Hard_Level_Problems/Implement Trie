@@ -1,0 +1,78 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+
+using namespace std;
+
+class TrieNode {
+public:
+    unordered_map<char, TrieNode*> children;
+    bool is_end_of_word;
+
+    TrieNode() {
+        is_end_of_word = false;
+    }
+};
+
+class Trie {
+private:
+    TrieNode* root;
+
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+
+    void insert(string word) {
+        TrieNode* current = root;
+        for (char c : word) {
+            if (current->children.find(c) == current->children.end()) {
+                current->children[c] = new TrieNode();
+            }
+            current = current->children[c];
+        }
+        current->is_end_of_word = true;
+    }
+
+    bool search(string word) {
+        TrieNode* current = root;
+        for (char c : word) {
+            if (current->children.find(c) == current->children.end()) {
+                return false;
+            }
+            current = current->children[c];
+        }
+        return current->is_end_of_word;
+    }
+
+    bool startsWith(string prefix) {
+        TrieNode* current = root;
+        for (char c : prefix) {
+            if (current->children.find(c) == current->children.end()) {
+                return false;
+            }
+            current = current->children[c];
+        }
+        return true;
+    }
+};
+
+// Function to process the queries
+vector<bool> process_queries(vector<pair<int, string>>& queries) {
+    Trie trie;
+    vector<bool> results;
+    for (auto query : queries) {
+        int query_type = query.first;
+        string word = query.second;
+        if (query_type == 1) {
+            trie.insert(word);
+        }
+        else if (query_type == 2) {
+            results.push_back(trie.search(word));
+        }
+        else if (query_type == 3) {
+            results.push_back(trie.startsWith(word));
+        }
+    }
+    return results;
+}
