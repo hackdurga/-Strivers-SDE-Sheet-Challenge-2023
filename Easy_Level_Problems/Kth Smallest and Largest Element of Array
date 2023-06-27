@@ -1,0 +1,20 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+vector<int> kthSmallLarge(vector<int> &arr, int n, int k)
+{
+    // Sort the array in ascending order
+    sort(arr.begin(), arr.end());
+
+    // Retrieve the Kth smallest element
+    int kthSmallest = arr[k - 1];
+
+    // Retrieve the Kth largest element
+    int kthLargest = arr[n - k];
+
+    // Return the results as a vector
+    return {kthSmallest, kthLargest};
+}
