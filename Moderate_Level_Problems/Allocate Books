@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+bool isPossible(vector<int>& time, int N, long long maxTime) {
+    int days = 1;
+    long long currTime = 0;
+
+    for (int i = 0; i < time.size(); i++) {
+        if (currTime + time[i] > maxTime) {
+            days++;
+            currTime = time[i];
+        } else {
+            currTime += time[i];
+        }
+    }
+
+    return days <= N;
+}
+
+long long ayushGivesNinjatest(int n, int m, vector<int> time) {
+    long long low = *max_element(time.begin(), time.end());
+    long long high = accumulate(time.begin(), time.end(), 0LL);
+    long long result = high;
+
+    while (low <= high) {
+        long long mid = low + (high - low) / 2;
+
+        if (isPossible(time, n, mid)) {
+            result = mid;
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+
+    return result;
+}
