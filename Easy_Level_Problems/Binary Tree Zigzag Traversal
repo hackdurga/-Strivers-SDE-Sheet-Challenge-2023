@@ -1,0 +1,68 @@
+#include <bits/stdc++.h> 
+/*************************************************************
+
+    Following is the Binary Tree node structure
+
+    class BinaryTreeNode
+    {
+    public :
+        T data;
+        BinaryTreeNode<T> *left;
+        BinaryTreeNode<T> *right;
+
+        BinaryTreeNode(T data) {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+*************************************************************/
+
+vector<int> zigZagTraversal(BinaryTreeNode<int> *root) {
+    vector<int> result;
+    if (root == NULL)
+        return result;
+
+    // Use two stacks for alternating levels
+    stack<BinaryTreeNode<int>*> currentLevel;
+    stack<BinaryTreeNode<int>*> nextLevel;
+
+    // Push the root node onto the current level stack
+    currentLevel.push(root);
+
+    bool leftToRight = true;  // flag to determine traversal direction
+
+    while (!currentLevel.empty()) {
+        BinaryTreeNode<int>* currentNode = currentLevel.top();
+        currentLevel.pop();
+
+        if (currentNode) {
+            // Add the current node's value to the result
+            result.push_back(currentNode->data);
+
+            // Push the next level nodes onto the appropriate stack
+            if (leftToRight) {
+                if (currentNode->left)
+                    nextLevel.push(currentNode->left);
+                if (currentNode->right)
+                    nextLevel.push(currentNode->right);
+            } else {
+                if (currentNode->right)
+                    nextLevel.push(currentNode->right);
+                if (currentNode->left)
+                    nextLevel.push(currentNode->left);
+            }
+        }
+
+        if (currentLevel.empty()) {
+            // Finished processing the current level
+            // Swap the stacks and reverse the traversal direction
+            swap(currentLevel, nextLevel);
+            leftToRight = !leftToRight;
+        }
+    }
+
+    return result;
+}
+
