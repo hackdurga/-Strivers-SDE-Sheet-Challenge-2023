@@ -1,0 +1,30 @@
+#include <bits/stdc++.h> 
+using namespace std;
+
+vector<int> KMostFrequent(int n, int k, vector<int> &arr)
+{
+    unordered_map<int, int> freq_map;
+
+    // Step 1: Create a frequency map
+    for (int i = 0; i < n; i++) {
+        freq_map[arr[i]]++;
+    }
+
+    // Step 2: Sort the map based on frequency count
+    priority_queue<pair<int, int>> pq;
+    for (auto it = freq_map.begin(); it != freq_map.end(); it++) {
+        pq.push(make_pair(it->second, it->first));
+    }
+
+    // Step 4: Extract the top K elements from the priority queue
+    vector<int> result;
+    for (int i = 0; i < k; i++) {
+        result.push_back(pq.top().second);
+        pq.pop();
+    }
+
+    // Step 5: Sort the result in ascending order
+    sort(result.begin(), result.end());
+
+    return result;
+}
