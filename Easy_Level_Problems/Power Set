@@ -1,0 +1,26 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void generatePowerSet(vector<int>& v, int index, vector<int>& currentSet, vector<vector<int>>& powerSet) {
+    // Add the current set to the power set
+    powerSet.push_back(currentSet);
+
+    // Generate subsets starting from the next index
+    for (int i = index; i < v.size(); i++) {
+        // Include the current element in the subset
+        currentSet.push_back(v[i]);
+
+        // Generate subsets starting from the next index
+        generatePowerSet(v, i + 1, currentSet, powerSet);
+
+        // Backtrack by removing the current element
+        currentSet.pop_back();
+    }
+}
+
+vector<vector<int>> pwset(vector<int>& v) {
+    vector<vector<int>> powerSet;
+    vector<int> currentSet;
+    generatePowerSet(v, 0, currentSet, powerSet);
+    return powerSet;
+}
