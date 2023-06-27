@@ -1,0 +1,26 @@
+#include <stack>
+#include <unordered_map>
+#include <string>
+
+bool isValidParenthesis(const std::string& expression)
+{
+    std::stack<char> stk;
+    std::unordered_map<char, char> parenthesesMap = {
+        {')', '('},
+        {']', '['},
+        {'}', '{'}
+    };
+
+    for (char ch : expression) {
+        if (ch == '(' || ch == '[' || ch == '{') {
+            stk.push(ch);
+        } else if (ch == ')' || ch == ']' || ch == '}') {
+            if (stk.empty() || stk.top() != parenthesesMap[ch]) {
+                return false;
+            }
+            stk.pop();
+        }
+    }
+
+    return stk.empty();
+}
