@@ -1,0 +1,19 @@
+#include <vector>
+using namespace std;
+
+vector<int> maxXorQueries(vector<int>& arr, vector<vector<int>>& queries) {
+    vector<int> result;
+    for (vector<int>& query : queries) {
+        int Xi = query[0];
+        int Ai = query[1];
+        int max_xor = -1;
+        for (int num : arr) {
+            if (num <= Ai) {
+                int xor_value = Xi ^ num;
+                max_xor = max(max_xor, xor_value);
+            }
+        }
+        result.push_back(max_xor);
+    }
+    return result;
+}
