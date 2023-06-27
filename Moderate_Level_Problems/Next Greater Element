@@ -1,0 +1,20 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+vector<int> nextGreater(vector<int> &arr, int n) {
+    vector<int> result(n, -1);  // Initialize the result vector with -1
+    stack<int> st;  // Stack to keep track of elements in descending order
+
+    for (int i = n - 1; i >= 0; i--) {
+        while (!st.empty() && st.top() <= arr[i]) {
+            st.pop();  // Pop elements that are not the next greater element
+        }
+        if (!st.empty()) {
+            result[i] = st.top();  // Set the next greater element for the current element
+        }
+        st.push(arr[i]);  // Push the current element onto the stack
+    }
+
+    return result;
+}
