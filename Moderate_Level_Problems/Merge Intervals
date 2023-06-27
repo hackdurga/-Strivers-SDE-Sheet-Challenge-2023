@@ -1,0 +1,31 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<vector<int>> mergeIntervals(vector<vector<int>>& intervals) {
+    vector<vector<int>> mergedIntervals;
+    
+    // Sort the intervals based on the start point
+    sort(intervals.begin(), intervals.end(), [](const vector<int>& a, const vector<int>& b) {
+        return a[0] < b[0];
+    });
+    
+    int n = intervals.size();
+    mergedIntervals.push_back(intervals[0]);
+    
+    for (int i = 1; i < n; i++) {
+        int mergedSize = mergedIntervals.size();
+        int currentStart = intervals[i][0];
+        int currentEnd = intervals[i][1];
+        int lastEnd = mergedIntervals[mergedSize - 1][1];
+        
+        if (currentStart <= lastEnd) {
+            mergedIntervals[mergedSize - 1][1] = max(lastEnd, currentEnd);
+        } else {
+            mergedIntervals.push_back(intervals[i]);
+        }
+    }
+    
+    return mergedIntervals;
+}
