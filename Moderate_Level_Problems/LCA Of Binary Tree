@@ -1,0 +1,57 @@
+#include <bits/stdc++.h> 
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    template <typename T>
+    class TreeNode {
+       public:
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data) {
+            this->data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+
+TreeNode<int> *lowestCommonAncestorHelper(TreeNode<int> *root, int x, int y) {
+    if (root == NULL) {
+        return NULL;
+    }
+
+    if (root->data == x || root->data == y) {
+        return root; // Current node is one of the nodes
+    }
+
+    TreeNode<int> *leftLCA = lowestCommonAncestorHelper(root->left, x, y);
+    TreeNode<int> *rightLCA = lowestCommonAncestorHelper(root->right, x, y);
+
+    // If both nodes are found in the left and right subtrees, return the current node as LCA
+    if (leftLCA != NULL && rightLCA != NULL) {
+        return root;
+    }
+
+    // If one node is found, return the found node as LCA
+    if (leftLCA != NULL) {
+        return leftLCA;
+    }
+
+    if (rightLCA != NULL) {
+        return rightLCA;
+    }
+
+    return NULL; // Nodes not found in the current subtree
+}
+
+int lowestCommonAncestor(TreeNode<int> *root, int x, int y) {
+    TreeNode<int> *lca = lowestCommonAncestorHelper(root, x, y);
+    if (lca != NULL) {
+        return lca->data;
+    }
+    return -1; // Return -1 if LCA not found
+}
