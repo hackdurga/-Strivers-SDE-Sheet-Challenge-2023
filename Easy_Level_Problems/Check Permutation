@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool areAnagram(string &str1, string &str2) {
+    // Check if the strings have the same length
+    if (str1.length() != str2.length()) {
+        return false;
+    }
+
+    // Build frequency hashmaps for both strings
+    unordered_map<char, int> freq1, freq2;
+    for (char ch : str1) {
+        freq1[ch]++;
+    }
+    for (char ch : str2) {
+        freq2[ch]++;
+    }
+
+    // Compare the frequencies of each character
+    for (auto entry : freq1) {
+        char ch = entry.first;
+        int count1 = entry.second;
+        int count2 = freq2[ch];
+        if (count1 != count2) {
+            return false;
+        }
+    }
+
+    return true;
+}
